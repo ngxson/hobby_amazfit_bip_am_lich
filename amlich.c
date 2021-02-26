@@ -75,9 +75,13 @@ void show_screen(void * param0) {
     _memclr( &datetime, sizeof(struct datetime_));
     get_current_date_time(&datetime);
     // remember: datetime.month is from 1 to 12
+    app_data->day = datetime.day;
     app_data->month = datetime.month;
+    app_data->today_month = datetime.month;
     app_data->year = datetime.year;
+    app_data->today_year = datetime.year;
     app_data->buffer[20] = '\0';
+    app_data->show_about_us = 0;
   }
 
   // here we do the interface drawing, there is no need to update (move to video memory) the screen
@@ -118,56 +122,86 @@ int dispatch_screen(void * param) {
 
   struct gesture_ * gest = param;
   int result = 0;
+  int idx = get_index(app_data->month, app_data->year);
 
   switch (gest->gesture) {
     case GESTURE_CLICK: {
-      // TODO
+      if (gest->touch_pos_y < 24) {
+        app_data->show_about_us = !app_data->show_about_us;
+        draw_screen(app_data);
+        repaint_screen_lines(0, 176);
+      }
       break;
     };
+
     case GESTURE_SWIPE_RIGHT: { //	swipe to the right
-      // usually this is the exit from the application
-      show_menu_animate(app_data->ret_f, (unsigned int) show_screen, ANIMATE_RIGHT);
-      // exit_app();
-      return 0;
+      if (idx == 0) {
+        vibrate(1, 100, 0); // top of database
+      } else {
+        vibrate (1, 40, 0);
+        app_data->year--;
+        draw_screen(app_data);
+        repaint_screen_lines(0, 176);
+      }
+      break;
     };
+
     case GESTURE_SWIPE_LEFT: { // swipe to the left
-      // actions when swiping left	
+      if (idx == DATABASE_SIZE - 1) {
+        vibrate(1, 100, 0); // bottom of database
+      } else {
+        vibrate(1, 40, 0);
+        app_data->year++;
+        draw_screen(app_data);
+        repaint_screen_lines(0, 176);
+      }
       break;
     };
+
     case GESTURE_SWIPE_UP: { // swipe up
-      vibrate(1, 40, 0);
-      if (app_data->last_half) {
-        if (app_data->month == 12) {
-          app_data->month = 1;
-          app_data->year++;
-        } else {
-          app_data->month++;
-        }
-        app_data->last_half = 0;
+      if (idx == DATABASE_SIZE - 1) {
+        vibrate(1, 100, 0); // bottom of database
       } else {
-        app_data->last_half = 1;
+        vibrate(1, 40, 0);
+        if (app_data->last_half) {
+          if (app_data->month == 12) {
+            app_data->month = 1;
+            app_data->year++;
+          } else {
+            app_data->month++;
+          }
+          app_data->last_half = 0;
+        } else {
+          app_data->last_half = 1;
+        }
+        draw_screen(app_data);
+        repaint_screen_lines(0, 176);
       }
-      draw_screen(app_data);
-      repaint_screen_lines(0, 176);
       break;
     };
+
     case GESTURE_SWIPE_DOWN: { // swipe down
-      vibrate (1, 40, 0);
-      if (app_data->last_half) {
-        app_data->last_half = 0;
+      if (idx == 0) {
+        vibrate(1, 100, 0); // top of database
       } else {
-        if (app_data->month == 1) {
-          app_data->month = 12;
-          app_data->year--;
+        vibrate (1, 40, 0);
+        if (app_data->last_half) {
+          app_data->last_half = 0;
         } else {
-          app_data->month--;
+          if (app_data->month == 1) {
+            app_data->month = 12;
+            app_data->year--;
+          } else {
+            app_data->month--;
+          }
+          app_data->last_half = 1;
         }
-        app_data->last_half = 1;
+        draw_screen(app_data);
+        repaint_screen_lines(0, 176);
       }
-      draw_screen(app_data);
-      repaint_screen_lines(0, 176);
       break;
     };
+
     default: { // something went wrong ...
       break;
     };
@@ -177,7 +211,10 @@ int dispatch_screen(void * param) {
 };
 
 #define LAST_HAFT_HIDE_NB_LINES 2
+#define OFFSET_CALENDER_X 5
 #define OFFSET_CALENDER_Y 18*2
+#define CHAR_HEIGHT 16
+#define CHAR_WIDTH 8
 
 void draw_buffer(char *buffer, int y) {
   char buf[2];
@@ -185,40 +222,58 @@ void draw_buffer(char *buffer, int y) {
   for (int i = 0; i < 20; i++) {
     if (buffer[i] == ' ') continue;
     buf[0] = buffer[i];
-    text_out(buf, 5 + i * 8, y * 16 + OFFSET_CALENDER_Y);
+    text_out(buf, OFFSET_CALENDER_X + i * CHAR_WIDTH, OFFSET_CALENDER_Y + y * CHAR_HEIGHT);
   }
 }
 
+void draw_today_mark(int x, int y) {
+  int from_x = OFFSET_CALENDER_X + x * CHAR_WIDTH;
+  int from_y = OFFSET_CALENDER_Y + y * CHAR_HEIGHT;
+  draw_horizontal_line(from_y, from_x, from_x + 2*CHAR_WIDTH);
+  draw_horizontal_line(from_y + 2*CHAR_HEIGHT, from_x, from_x + 2*CHAR_WIDTH);
+  draw_vertical_line(from_x, from_y, from_y + 2*CHAR_HEIGHT);
+  draw_vertical_line(from_x + 2*CHAR_WIDTH, from_y, from_y + 2*CHAR_HEIGHT);
+}
+
 // custom function
+
+void draw_about_us() {
+  set_fg_color(COLOR_RED);
+  text_out_center("\x4c\xe1\xbb\x8b\x63\x68\x20\xc3\xa2\x6d\x20\x64\xc6\xb0\xc6\xa1\x6e\x67", 88, 88-18);
+  set_fg_color(COLOR_BLACK);
+  text_out_center("\x54\xc3\xa1\x63\x20\x67\x69\xe1\xba\xa3: Nui", 88, 88);
+  text_out_center("Web: ngxson.com", 88, 88+18);
+  text_out("x", 179-18-5, 5);
+}
+
 void draw_screen(struct app_data_ *a) {
-  set_bg_color(COLOR_BLACK);
+  set_bg_color(COLOR_WHITE);
   fill_screen_bg();
   set_graph_callback_to_ram_1();
-  // load fonts
   load_font();
-  set_fg_color(COLOR_WHITE);
+
+  if (a->show_about_us) return draw_about_us();
 
   char buf[20];
   char *data = database[get_index(a->month, a->year)];
   char l_day = data[0];
   char l_month = data[1];
-  char l_year = data[2];
+  char l_year = data[2] & 0x7F;
+  char l_is_leap_month = data[2] & 0x80;
+  char l_month_nb_of_days = l_is_leap_month ? 29 : 30;
   int l_current_day = 1;
 
-  // Duong lich mm/yyyy
-  _sprintf(buf, "\x44\xc6\xb0\xc6\xa1\x6e\x67\x20\x6c\xe1\xbb\x8b\x63\x68 %d/%d", a->month, a->year);
+  // mm/yyyy
+  set_fg_color(COLOR_BLACK);
+  _sprintf(buf, "\x4c\xe1\xbb\x8b\x63\x68 %d/%d", a->month, a->year);
   text_out_center(buf, 88, 0);
 
   // Dau thang:dd/mm/yyyy
   set_fg_color(COLOR_RED);
-  _sprintf(buf, "\xc4\x90\xe1\xba\xa7\x75\x20\x74\x68\xc3\xa1\x67\x3a%02d/%02d/%d", l_day, l_month, l_year <= 40 ? (2000 + l_year) : (1900 + l_year));
-  text_out(buf, 5, 18);
-  set_fg_color(COLOR_WHITE);
-  text_out("\xc4\x90\xe1\xba\xa7\x75\x20\x74\x68\xc3\xa1\x67\x3a", 5, 18);
-
-  set_fg_color(COLOR_YELLOW);
-  draw_buffer("CN T2 T3 T4 T5 T6 T7", 0);
-  set_fg_color(COLOR_WHITE);
+  _sprintf(buf, "\xc4\x90\xe1\xba\xa7\x75\x20\x74\x68\xc3\xa1\x67\x3a%02d/%02d/%d", l_day, l_month, l_year <= 60 ? (2000 + l_year) : (1900 + l_year));
+  text_out(buf, OFFSET_CALENDER_X, 18);
+  set_fg_color(COLOR_BLACK);
+  text_out("\xc4\x90\xe1\xba\xa7\x75\x20\x74\x68\xc3\xa1\x67\x3a", OFFSET_CALENDER_X, 18);
 
   int current_day = 1;
   char nb_days = number_of_days(a->month, a->year);
@@ -226,8 +281,12 @@ void draw_screen(struct app_data_ *a) {
 
   char should_show_this_line = 0;
   char y_coord = 0;
+  char today_x = 100;
+  char today_y = 100;
 
   for (char y = 0; y < 6; y++) {
+    today_x = 100;
+    today_y = 100;
     should_show_this_line = a->last_half ? (y >= LAST_HAFT_HIDE_NB_LINES) : 1;
     y_coord = a->last_half ? y - LAST_HAFT_HIDE_NB_LINES : y;
 
@@ -237,6 +296,18 @@ void draw_screen(struct app_data_ *a) {
       } else {
         n_write_number(a, current_day);
         if (x < 6) { n_write(a, " ", 1); }
+
+        // check today
+        if (
+          a->month == a->today_month
+          && a->year == a->today_year
+          && current_day == a->day
+        ) {
+          today_x = x;
+          today_y = y_coord;
+        }
+
+        // next day
         current_day++;
       }
     }
@@ -252,13 +323,28 @@ void draw_screen(struct app_data_ *a) {
         n_write_number(a, l_day);
         if (x < 6) { n_write(a, " ", 1); }
         l_current_day++;
-        l_day = l_day <= 30 ? l_day + 1 : 1;
+        l_day = l_day < l_month_nb_of_days ? l_day + 1 : 1;
       }
     }
 
     set_fg_color(COLOR_RED);
     if (should_show_this_line) draw_buffer(a->buffer, (y_coord * 2) + 2);
     n_clear(a);
-    set_fg_color(COLOR_WHITE);
+    set_fg_color(COLOR_BLACK);
+
+    if (should_show_this_line && today_x != 100)
+      draw_today_mark(
+        today_x * 3,
+        today_y * 2 + 1
+      );
   }
+
+  // draw header
+  set_fg_color(COLOR_BLUE);
+  draw_buffer("CN T2 T3 T4 T5 T6 T7", 0);
+  draw_horizontal_line(OFFSET_CALENDER_Y - 1, 0, 176);
+  draw_horizontal_line(OFFSET_CALENDER_Y + CHAR_HEIGHT + 1, 0, 176);
+  set_fg_color(COLOR_BLACK);
+
+  n_clear(a);
 };

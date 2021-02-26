@@ -1,7 +1,6 @@
 #ifndef __AMLICH_UTILS_H__
 #define __AMLICH_UTILS_H__
 
-#include "amlich.h"
 #include "libbip.h"
 
 char number_of_days(int month, int year) {
