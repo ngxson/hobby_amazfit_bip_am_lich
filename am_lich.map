@@ -395,7 +395,7 @@ LOAD ..\libbip\libbip.a
  *(.iplt)
  .iplt          0x000080a8        0x0 amlich.o
 
-.text           0x000080a8      0x5b0
+.text           0x000080a8      0x598
  *(.text.unlikely .text.*_unlikely .text.unlikely.*)
  *(.text.exit .text.exit.*)
  *(.text.startup .text.startup.*)
@@ -428,77 +428,77 @@ LOAD ..\libbip\libbip.a
                 0x000081b8       0x34 amlich.o
                 0x000081b8                draw_buffer
  .text.draw_screen
-                0x000081ec      0x23c amlich.o
+                0x000081ec      0x224 amlich.o
                 0x000081ec                draw_screen
  .text.show_screen
-                0x00008428       0x94 amlich.o
-                0x00008428                show_screen
+                0x00008410       0x94 amlich.o
+                0x00008410                show_screen
  .text.dispatch_screen
-                0x000084bc       0xb8 amlich.o
-                0x000084bc                dispatch_screen
- .text          0x00008574        0xc ..\libbip\libbip.a(import.o)
-                0x00008574                _start
+                0x000084a4       0xb8 amlich.o
+                0x000084a4                dispatch_screen
+ .text          0x0000855c        0xc ..\libbip\libbip.a(import.o)
+                0x0000855c                _start
  .text.text_out
-                0x00008580        0xc ..\libbip\libbip.a(import.o)
-                0x00008580                text_out
+                0x00008568        0xc ..\libbip\libbip.a(import.o)
+                0x00008568                text_out
  .text.text_out_center
-                0x0000858c        0xc ..\libbip\libbip.a(import.o)
-                0x0000858c                text_out_center
+                0x00008574        0xc ..\libbip\libbip.a(import.o)
+                0x00008574                text_out_center
  .text.set_bg_color
-                0x00008598        0xc ..\libbip\libbip.a(import.o)
-                0x00008598                set_bg_color
+                0x00008580        0xc ..\libbip\libbip.a(import.o)
+                0x00008580                set_bg_color
  .text.set_fg_color
-                0x000085a4        0xc ..\libbip\libbip.a(import.o)
-                0x000085a4                set_fg_color
+                0x0000858c        0xc ..\libbip\libbip.a(import.o)
+                0x0000858c                set_fg_color
  .text.fill_screen_bg
-                0x000085b0        0xc ..\libbip\libbip.a(import.o)
-                0x000085b0                fill_screen_bg
+                0x00008598        0xc ..\libbip\libbip.a(import.o)
+                0x00008598                fill_screen_bg
  .text.set_graph_callback_to_ram_1
-                0x000085bc        0xc ..\libbip\libbip.a(import.o)
-                0x000085bc                set_graph_callback_to_ram_1
+                0x000085a4        0xc ..\libbip\libbip.a(import.o)
+                0x000085a4                set_graph_callback_to_ram_1
  .text.repaint_screen_lines
-                0x000085c8        0xc ..\libbip\libbip.a(import.o)
-                0x000085c8                repaint_screen_lines
+                0x000085b0        0xc ..\libbip\libbip.a(import.o)
+                0x000085b0                repaint_screen_lines
  .text.reg_menu
-                0x000085d4        0xc ..\libbip\libbip.a(import.o)
-                0x000085d4                reg_menu
+                0x000085bc        0xc ..\libbip\libbip.a(import.o)
+                0x000085bc                reg_menu
  .text.show_menu_animate
-                0x000085e0        0xc ..\libbip\libbip.a(import.o)
-                0x000085e0                show_menu_animate
+                0x000085c8        0xc ..\libbip\libbip.a(import.o)
+                0x000085c8                show_menu_animate
  .text.load_font
-                0x000085ec        0xc ..\libbip\libbip.a(import.o)
-                0x000085ec                load_font
+                0x000085d4        0xc ..\libbip\libbip.a(import.o)
+                0x000085d4                load_font
  .text._sprintf
-                0x000085f8        0xc ..\libbip\libbip.a(import.o)
-                0x000085f8                _sprintf
- .text._memclr  0x00008604        0xc ..\libbip\libbip.a(import.o)
-                0x00008604                _memclr
- .text.vibrate  0x00008610        0xc ..\libbip\libbip.a(import.o)
-                0x00008610                vibrate
+                0x000085e0        0xc ..\libbip\libbip.a(import.o)
+                0x000085e0                _sprintf
+ .text._memclr  0x000085ec        0xc ..\libbip\libbip.a(import.o)
+                0x000085ec                _memclr
+ .text.vibrate  0x000085f8        0xc ..\libbip\libbip.a(import.o)
+                0x000085f8                vibrate
  .text.get_current_date_time
-                0x0000861c        0xc ..\libbip\libbip.a(import.o)
-                0x0000861c                get_current_date_time
+                0x00008604        0xc ..\libbip\libbip.a(import.o)
+                0x00008604                get_current_date_time
  .text.show_watchface
-                0x00008628        0xc ..\libbip\libbip.a(import.o)
-                0x00008628                show_watchface
+                0x00008610        0xc ..\libbip\libbip.a(import.o)
+                0x00008610                show_watchface
  .text.pvPortMalloc
-                0x00008634        0xc ..\libbip\libbip.a(import.o)
-                0x00008634                pvPortMalloc
+                0x0000861c        0xc ..\libbip\libbip.a(import.o)
+                0x0000861c                pvPortMalloc
  .text.get_var_menu_overlay
-                0x00008640        0xc ..\libbip\libbip.a(import.o)
-                0x00008640                get_var_menu_overlay
+                0x00008628        0xc ..\libbip\libbip.a(import.o)
+                0x00008628                get_var_menu_overlay
  .text.get_ptr_temp_buf_2
-                0x0000864c        0xc ..\libbip\libbip.a(import.o)
-                0x0000864c                get_ptr_temp_buf_2
+                0x00008634        0xc ..\libbip\libbip.a(import.o)
+                0x00008634                get_ptr_temp_buf_2
  *(.gnu.warning)
  *(.glue_7t)
- .glue_7t       0x00008658        0x0 linker stubs
+ .glue_7t       0x00008640        0x0 linker stubs
  *(.glue_7)
- .glue_7        0x00008658        0x0 linker stubs
+ .glue_7        0x00008640        0x0 linker stubs
  *(.vfp11_veneer)
- .vfp11_veneer  0x00008658        0x0 linker stubs
+ .vfp11_veneer  0x00008640        0x0 linker stubs
  *(.v4_bx)
- .v4_bx         0x00008658        0x0 linker stubs
+ .v4_bx         0x00008640        0x0 linker stubs
 
 .fini
  *(SORT_NONE(.fini))
@@ -506,13 +506,13 @@ LOAD ..\libbip\libbip.a
                 [!provide]                PROVIDE (_etext = .)
                 [!provide]                PROVIDE (etext = .)
 
-.rodata         0x00008658       0x5f
+.rodata         0x00008640       0x5c
  *(.rodata .rodata.* .gnu.linkonce.r.*)
  .rodata.n_write_number.str1.1
-                0x00008658        0x6 amlich.o
+                0x00008640        0x6 amlich.o
  .rodata.draw_screen.str1.1
-                0x0000865e       0x59 amlich.o
-                                 0x5b (size before relaxing)
+                0x00008646       0x56 amlich.o
+                                 0x58 (size before relaxing)
 
 .rodata1
  *(.rodata1)
@@ -541,7 +541,7 @@ LOAD ..\libbip\libbip.a
 
 .exception_ranges
  *(.exception_ranges*)
-                0x000086b7                . = .
+                0x0000869c                . = .
 
 .eh_frame
  *(.eh_frame)
@@ -556,7 +556,7 @@ LOAD ..\libbip\libbip.a
 .exception_ranges
  *(.exception_ranges*)
 
-.tdata          0x000086b7        0x0
+.tdata          0x0000869c        0x0
                 [!provide]                PROVIDE (__tdata_start = .)
  *(.tdata .tdata.* .gnu.linkonce.td.*)
 
@@ -564,18 +564,18 @@ LOAD ..\libbip\libbip.a
  *(.tbss .tbss.* .gnu.linkonce.tb.*)
  *(.tcommon)
 
-.preinit_array  0x000086b7        0x0
+.preinit_array  0x0000869c        0x0
                 [!provide]                PROVIDE (__preinit_array_start = .)
  *(.preinit_array)
                 [!provide]                PROVIDE (__preinit_array_end = .)
 
-.init_array     0x000086b7        0x0
+.init_array     0x0000869c        0x0
                 [!provide]                PROVIDE (__init_array_start = .)
  *(SORT_BY_INIT_PRIORITY(.init_array.*) SORT_BY_INIT_PRIORITY(.ctors.*))
  *(.init_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .ctors)
                 [!provide]                PROVIDE (__init_array_end = .)
 
-.fini_array     0x000086b7        0x0
+.fini_array     0x0000869c        0x0
                 [!provide]                PROVIDE (__fini_array_start = .)
  *(SORT_BY_INIT_PRIORITY(.fini_array.*) SORT_BY_INIT_PRIORITY(.dtors.*))
  *(.fini_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .dtors)
@@ -598,57 +598,57 @@ LOAD ..\libbip\libbip.a
 .jcr
  *(.jcr)
 
-.data.rel.ro    0x000086b7        0x0
+.data.rel.ro    0x0000869c        0x0
  *(.data.rel.ro.local* .gnu.linkonce.d.rel.ro.local.*)
  *(.data.rel.ro .data.rel.ro.* .gnu.linkonce.d.rel.ro.*)
- .data.rel.ro   0x000086b7        0x0 amlich.o
+ .data.rel.ro   0x0000869c        0x0 amlich.o
 
-.dynamic        0x000086b8       0x80
+.dynamic        0x0000869c       0x80
  *(.dynamic)
- .dynamic       0x000086b8       0x80 amlich.o
-                0x000086b8                _DYNAMIC
+ .dynamic       0x0000869c       0x80 amlich.o
+                0x0000869c                _DYNAMIC
 
-.got            0x00008738       0x1c
+.got            0x0000871c       0x1c
  *(.got.plt)
- .got.plt       0x00008738        0xc amlich.o
-                0x00008738                _GLOBAL_OFFSET_TABLE_
+ .got.plt       0x0000871c        0xc amlich.o
+                0x0000871c                _GLOBAL_OFFSET_TABLE_
  *(.igot.plt)
- .igot.plt      0x00008744        0x0 amlich.o
+ .igot.plt      0x00008728        0x0 amlich.o
  *(.got)
- .got           0x00008744       0x10 amlich.o
+ .got           0x00008728       0x10 amlich.o
  *(.igot)
 
-.data           0x00008754      0xb60
-                0x00008754                __data_start = .
+.data           0x00008738      0xb60
+                0x00008738                __data_start = .
  *(.data .data.* .gnu.linkonce.d.*)
  .data.database
-                0x00008754      0xb40 amlich.o
-                0x00008754                database
+                0x00008738      0xb40 amlich.o
+                0x00008738                database
  .data.rel.screen_data
-                0x00009294       0x20 amlich.o
-                0x00009294                screen_data
+                0x00009278       0x20 amlich.o
+                0x00009278                screen_data
 
 .data1
  *(.data1)
-                0x000092b4                _edata = .
+                0x00009298                _edata = .
                 [!provide]                PROVIDE (edata = .)
-                0x000092b4                . = .
-                0x000092b4                __bss_start = .
-                0x000092b4                __bss_start__ = .
+                0x00009298                . = .
+                0x00009298                __bss_start = .
+                0x00009298                __bss_start__ = .
 
-.bss            0x000092b4        0x0
+.bss            0x00009298        0x0
  *(.dynbss)
- .dynbss        0x000092b4        0x0 amlich.o
+ .dynbss        0x00009298        0x0 amlich.o
  *(.bss .bss.* .gnu.linkonce.b.*)
  *(COMMON)
-                0x000092b4                . = ALIGN ((. != 0x0)?0x4:0x1)
-                0x000092b4                _bss_end__ = .
-                0x000092b4                __bss_end__ = .
-                0x000092b4                . = ALIGN (0x4)
-                0x000092b4                . = SEGMENT_START ("ldata-segment", .)
-                0x000092b4                . = ALIGN (0x4)
-                0x000092b4                __end__ = .
-                0x000092b4                _end = .
+                0x00009298                . = ALIGN ((. != 0x0)?0x4:0x1)
+                0x00009298                _bss_end__ = .
+                0x00009298                __bss_end__ = .
+                0x00009298                . = ALIGN (0x4)
+                0x00009298                . = SEGMENT_START ("ldata-segment", .)
+                0x00009298                . = ALIGN (0x4)
+                0x00009298                __end__ = .
+                0x00009298                _end = .
                 [!provide]                PROVIDE (end = .)
 
 .stack          0x00080000        0x0
@@ -756,11 +756,11 @@ LOAD ..\libbip\libbip.a
 .note.gnu.arm.ident
  *(.note.gnu.arm.ident)
 
-.noinit         0x000092b4        0x0
-                0x000092b4                . = ALIGN (0x2)
+.noinit         0x00009298        0x0
+                0x00009298                . = ALIGN (0x2)
                 [!provide]                PROVIDE (__noinit_start = .)
  *(.noinit)
-                0x000092b4                . = ALIGN (0x2)
+                0x00009298                . = ALIGN (0x2)
                 [!provide]                PROVIDE (__noinit_end = .)
 
 /DISCARD/

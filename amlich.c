@@ -177,7 +177,7 @@ int dispatch_screen(void * param) {
 };
 
 #define LAST_HAFT_HIDE_NB_LINES 2
-#define OFFSET_CALENDER_Y 18 + 16
+#define OFFSET_CALENDER_Y 18*2
 
 void draw_buffer(char *buffer, int y) {
   char buf[2];
@@ -218,8 +218,6 @@ void draw_screen(struct app_data_ *a) {
 
   set_fg_color(COLOR_YELLOW);
   draw_buffer("CN T2 T3 T4 T5 T6 T7", 0);
-  set_fg_color(COLOR_AQUA);
-  draw_buffer("CN", 0);
   set_fg_color(COLOR_WHITE);
 
   int current_day = 1;
