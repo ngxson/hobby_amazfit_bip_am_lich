@@ -8,6 +8,7 @@ App Âm lịch dành cho amazfit bip (BipOS)
 4. Up lên bip và thưởng thức
 
 # Thông tin
-Tác giả: @ngxson
-Website: (ngxson.com)[https://ngxson.com]
-App tương thích với mọi phiên bản của BipOS
+Tác giả: @ngxson  
+Website: [ngxson.com](https://ngxson.com)  
+App tương thích với mọi phiên bản của BipOS  
+  
