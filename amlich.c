@@ -141,7 +141,7 @@ int dispatch_screen(void * param) {
 
     case GESTURE_SWIPE_RIGHT: { //	swipe to the right
       if (app_data->show_about_us) break;
-      if (idx == 0) {
+      if (idx <= 12) {
         vibrate(1, 100, 0); // top of database
       } else {
         vibrate(1, 40, 0);
@@ -154,7 +154,7 @@ int dispatch_screen(void * param) {
 
     case GESTURE_SWIPE_LEFT: { // swipe to the left
       if (app_data->show_about_us) break;
-      if (idx == DATABASE_SIZE - 1) {
+      if (idx >= DATABASE_SIZE - 1 - 12) {
         vibrate(1, 100, 0); // bottom of database
       } else {
         vibrate(1, 40, 0);
