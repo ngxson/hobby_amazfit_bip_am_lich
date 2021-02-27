@@ -1,9 +1,7 @@
 /*
-	Application template for Amazfit Bip BipOS
-	(C) Maxim Volkov  2019 <Maxim.N.Volkov@ya.ru>
-	
-	Application template loader for the BipOS
-	
+	Lunar calendar app for Amazfit Bip BipOS
+	(C) Maxim Volkov     2019 <Maxim.N.Volkov@ya.ru>
+	(C) Xuan Son NGUYEN  2021 <contact@ngxson.com>
 */
 
 #include <libbip.h>
@@ -90,6 +88,11 @@ void show_screen(void * param0) {
 
   // if necessary, set the call timer screen_job in ms
   // set_update_period(1, 30000);
+
+  // prevent exiting the app after a period
+  set_display_state_value(8, 1);
+  set_display_state_value(2, 1);
+  set_update_period(0, 0);
 }
 
 void key_press_screen() {
@@ -102,10 +105,11 @@ void key_press_screen() {
 
 void screen_job() {
   // if necessary, you can use the screen data in this function
-  struct app_data_ ** app_data_p = get_ptr_temp_buf_2(); //	pointer to pointer to screen data  
-  struct app_data_ * app_data = * app_data_p; //	pointer to screen data
+  // struct app_data_ ** app_data_p = get_ptr_temp_buf_2(); //	pointer to pointer to screen data  
+  // struct app_data_ * app_data = * app_data_p; //	pointer to screen data
 
-  show_menu_animate(app_data->ret_f, (unsigned int) show_screen, ANIMATE_LEFT);
+  // show_menu_animate(app_data->ret_f, (unsigned int) show_screen, ANIMATE_LEFT);
+  key_press_screen();
 }
 
 void exit_app() {
@@ -127,6 +131,7 @@ int dispatch_screen(void * param) {
   switch (gest->gesture) {
     case GESTURE_CLICK: {
       if (gest->touch_pos_y < 24) {
+        vibrate(1, 40, 0);
         app_data->show_about_us = !app_data->show_about_us;
         draw_screen(app_data);
         repaint_screen_lines(0, 176);
@@ -135,10 +140,11 @@ int dispatch_screen(void * param) {
     };
 
     case GESTURE_SWIPE_RIGHT: { //	swipe to the right
+      if (app_data->show_about_us) break;
       if (idx == 0) {
         vibrate(1, 100, 0); // top of database
       } else {
-        vibrate (1, 40, 0);
+        vibrate(1, 40, 0);
         app_data->year--;
         draw_screen(app_data);
         repaint_screen_lines(0, 176);
@@ -147,6 +153,7 @@ int dispatch_screen(void * param) {
     };
 
     case GESTURE_SWIPE_LEFT: { // swipe to the left
+      if (app_data->show_about_us) break;
       if (idx == DATABASE_SIZE - 1) {
         vibrate(1, 100, 0); // bottom of database
       } else {
@@ -159,6 +166,7 @@ int dispatch_screen(void * param) {
     };
 
     case GESTURE_SWIPE_UP: { // swipe up
+      if (app_data->show_about_us) break;
       if (idx == DATABASE_SIZE - 1) {
         vibrate(1, 100, 0); // bottom of database
       } else {
@@ -181,10 +189,11 @@ int dispatch_screen(void * param) {
     };
 
     case GESTURE_SWIPE_DOWN: { // swipe down
+      if (app_data->show_about_us) break;
       if (idx == 0) {
         vibrate(1, 100, 0); // top of database
       } else {
-        vibrate (1, 40, 0);
+        vibrate(1, 40, 0);
         if (app_data->last_half) {
           app_data->last_half = 0;
         } else {
@@ -257,7 +266,7 @@ void draw_screen(struct app_data_ *a) {
   char buf[20];
   char *data = database[get_index(a->month, a->year)];
   char l_day = data[0];
-  char l_month = data[1];
+  char l_month = data[1] & 0x0F;
   char l_year = data[2] & 0x7F;
   char l_is_leap_month = data[2] & 0x80;
   char l_month_nb_of_days = l_is_leap_month ? 29 : 30;
@@ -265,7 +274,7 @@ void draw_screen(struct app_data_ *a) {
 
   // mm/yyyy
   set_fg_color(COLOR_BLACK);
-  _sprintf(buf, "\x4c\xe1\xbb\x8b\x63\x68 %d/%d", a->month, a->year);
+  _sprintf(buf, "Tháng %d/%d", a->month, a->year);
   text_out_center(buf, 88, 0);
 
   // Dau thang:dd/mm/yyyy
@@ -277,7 +286,7 @@ void draw_screen(struct app_data_ *a) {
 
   int current_day = 1;
   char nb_days = number_of_days(a->month, a->year);
-  char first_day_of_week = data[3];
+  char first_day_of_week = (data[1] & 0xF0) >> 4;
 
   char should_show_this_line = 0;
   char y_coord = 0;
@@ -332,11 +341,12 @@ void draw_screen(struct app_data_ *a) {
     n_clear(a);
     set_fg_color(COLOR_BLACK);
 
-    if (should_show_this_line && today_x != 100)
+    if (should_show_this_line && today_x != 100) {
       draw_today_mark(
         today_x * 3,
         today_y * 2 + 1
       );
+    }
   }
 
   // draw header
