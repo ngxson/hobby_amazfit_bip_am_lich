@@ -1,0 +1,78 @@
+<html>
+  <head></head>
+  <body>
+    <div id="cal"></div>
+    <script src="amlich-hnd.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      var leap_months = [];
+      var DATA = [];
+
+      function nui() {
+        var month = 1;
+        var year = 1980;
+        var intervalId;
+
+        function cal() {
+          if (year === 2060) {
+            //console.log(JSON.stringify(output, null, 2));
+            clearInterval(intervalId);
+            nui1();
+            return;
+          }
+
+          $('#cal').html(printMonth(month, year));
+          const tmp = $('tr > td[title]')[0].onclick
+            .toString()
+            .match(/[0-9,]+/)[0]
+            .split(',')
+            .map(t => parseInt(t));
+
+          const tmp1 = $('tr > td[title]').map((_, e) => {
+            const t = e.onclick.toString()
+              .match(/[0-9,]+/)[0]
+              .split(',');
+            return parseInt(t[0]);
+          });
+          const tmp2 = [];
+          for (const e of tmp1) tmp2.push(e);
+          const is_leap = !!tmp2.join(' ').match(/29 1/);
+          const tmp3 = {
+            l_day: tmp[0],
+            l_month: tmp[1],
+            l_year: tmp[2],
+            l_is_leap: is_leap,
+          };
+          console.log(tmp3);
+          DATA.push(tmp3);
+
+          month++;
+          if (month === 13) {
+            month = 1;
+            year++;
+          }
+        }
+
+        intervalId = setInterval(cal, 10);
+        //cal()
+      }
+
+      nui();
+
+function nui1() {
+  const arr = DATA.map((d, i) => {
+    const monthIndex = i % 12;
+    const year = parseInt(1980 + (i / 12));
+    const day_of_week = (new Date(year, monthIndex, 1)).getDay();
+    return '{' + [
+      d.l_day,
+      (day_of_week << 4) + d.l_month,
+      (d.l_year % 100) + (d.l_is_leap ? 0x80 : 0),
+    ].join(', ') + '},';
+  });
+  console.log(arr.join('\n'));
+}
+
+    </script>
+  </body>
+</html>
